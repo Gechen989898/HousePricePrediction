@@ -56,7 +56,7 @@ The notebook is designed to be **restart-and-run-all reproducible**.
 #### 2️⃣ Baseline Model
 
 * Constant-value benchmark based on target distribution
-* Evaluate performance using **MAE**
+* Evaluate performance using **RMSE**
 * Serves as a reference model all future models must beat
 
 #### 3️⃣ Preprocessing & Feature Engineering
@@ -79,7 +79,7 @@ Models are evaluated using **cross-validation** for reliable estimates.
 
 #### 5️⃣ Evaluation & Insights
 
-* Metrics: **MAE (primary), RMSE (secondary)**
+* Metrics: RMSE (secondary)
 * Error stability across folds
 * Practical interpretability considerations
 
@@ -89,8 +89,8 @@ Models are evaluated using **cross-validation** for reliable estimates.
 
 > *(Replace with your actual values after final run)*
 
-* Baseline MAE: `_____`
-* Best Model MAE: `_____`
+* Baseline rmse: `__0.20___`
+* Best Model rmse: `_0.12____`
 * Performance improved through:
 
   * Feature preprocessing
