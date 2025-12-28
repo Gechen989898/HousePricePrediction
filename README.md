@@ -1,42 +1,50 @@
-## 🏠 House Price Prediction — End-to-End Machine Learning Project
+## 🏠 House Price Prediction — End-to-End Machine Learning Pipeline
 
 ### 📌 Overview
 
-This project builds an **end-to-end Machine Learning pipeline** to predict residential house prices using the Ames Housing dataset. The goal is not only to train a model, but to design a workflow that reflects **real-world Data Science practice**, including baseline modeling, feature engineering, pipeline design, validation discipline, and performance benchmarking.
+This project implements a **production-style machine learning pipeline** to predict residential house prices using the Ames Housing dataset. The focus is not only on model accuracy, but on building a workflow that reflects **real-world Data Science practice**, including:
 
-This project was completed as an independent portfolio project to demonstrate my ability to work through the **full ML lifecycle from raw data to insights and models**.
+* leakage-safe preprocessing pipelines
+* baseline → model iteration → stacking ensembles
+* cross-validated evaluation
+* explainability using SHAP
+* reproducibility and model export
 
----
-
-### 🎯 Objectives
-
-* Build a clean and reproducible ML pipeline
-* Establish a baseline and iteratively improve performance
-* Apply feature preprocessing and engineering in a structured way
-* Compare linear and tree-based ensemble models
-* Evaluate models using reliable validation practices
-* Focus on interpretability and practical modeling decisions
+This project is part of my portfolio and demonstrates my ability to work through the **full ML lifecycle — from raw data → feature engineering → modeling → evaluation → interpretation → deployment-readiness**.
 
 ---
 
-### 🧰 Tech Stack
+## 🎯 Objectives
 
-* **Python**, NumPy, Pandas
-* **Scikit-Learn** (pipelines, preprocessing, model evaluation)
-* Tree-based ensemble models (Random Forest / Gradient Boosting / XGBoost)
-* Matplotlib & Seaborn for visualization
+* Build a **clean, modular, and reproducible ML pipeline**
+* Establish a **baseline benchmark** and iteratively improve performance
+* Apply structured **preprocessing, encoding, scaling, and feature selection**
+* Compare multiple regression models and **stacking ensembles**
+* Evaluate using **cross-validated RMSE / MAE** to avoid overfitting
+* Apply **model explainability (SHAP)** to support interpretation and trust
 
 ---
 
-### 🗂 Project Structure
+## 🧰 Tech Stack
+
+* Python, NumPy, Pandas
+* Scikit-Learn (Pipeline, ColumnTransformer, CV, Stacking)
+* Ridge Regression, KNN Regressor, SVR
+* Random Forest, Gradient Boosting, XGBoost
+* SHAP for global & local interpretability
+* Matplotlib / Seaborn for visualization
+
+---
+
+## 🗂 Project Structure
 
 ```
 house-price-prediction/
 │
-├── data/               # dataset files
-├── notebooks/          # analysis & experiments
+├── data/                     # dataset files
+├── notebooks/                # analysis & experimentation
 │   └── house_price_prediction.ipynb
-├── models/             # saved models (optional)
+├── models/                   # exported pipelines / artifacts
 ├── README.md
 └── requirements.txt
 ```
@@ -45,90 +53,114 @@ The notebook is designed to be **restart-and-run-all reproducible**.
 
 ---
 
-### 🔧 Methodology & Workflow
+## 🔧 Methodology & Workflow
 
-#### 1️⃣ Exploratory Data Analysis
+### 1️⃣ Exploratory Data Analysis
 
-* Inspect feature types and missing values
-* Understand distributions and target behavior
-* Identify data quality issues and transformation needs
+* Feature type inspection & missing-value profiling
+* Target distribution & log-transform assessment
+* Data quality checks to guide preprocessing decisions
 
-#### 2️⃣ Baseline Model
+---
+
+### 2️⃣ Baseline Model
 
 * Constant-value benchmark based on target distribution
-* Evaluate performance using **RMSE**
-* Serves as a reference model all future models must beat
-
-#### 3️⃣ Preprocessing & Feature Engineering
-
-* Handling missing values by type-appropriate strategies
-* Encoding categorical variables
-* Log-transforming `SalePrice` to stabilize variance
-* Selective feature reduction to improve generalization
-* Implemented using **Sklearn pipelines to avoid leakage**
-
-#### 4️⃣ Model Development
-
-* Linear Regression (reference model)
-* Tree-based ensemble models:
-
-  * Random Forest
-  * Gradient Boosting / XGBoost
-
-Models are evaluated using **cross-validation** for reliable estimates.
-
-#### 5️⃣ Evaluation & Insights
-
-* Metrics: RMSE (secondary)
-* Error stability across folds
-* Practical interpretability considerations
+* Used as the **minimum performance bar** future models must beat
 
 ---
 
-### 📊 Results (Summary)
+### 3️⃣ Preprocessing & Feature Engineering
 
-> *(Replace with your actual values after final run)*
+Implemented using **Scikit-Learn Pipelines** to prevent leakage:
 
-* Baseline rmse: `__0.20___`
-* Best Model rmse: `_0.12____`
-* Performance improved through:
+* Numerical → KNN imputation + scaling
+* Ordinal → ordered encoding
+* Nominal → one-hot encoding
+* Log-transform on `SalePrice`
+* Feature selection using **mutual information**
 
-  * Feature preprocessing
-  * Tree-based modeling
-  * Iterative refinement
-
-The final model demonstrates **significant improvement over the baseline**, showing meaningful predictive value.
+All steps are applied **consistently in training & inference**.
 
 ---
 
-### 🔁 Reproducibility
+### 4️⃣ Model Development
+
+Multiple regression models were trained and compared:
+
+* Linear / Ridge Regression
+* KNN Regressor
+* Support Vector Regressor (SVR)
+* Tree-based ensemble models
+* **Stacking Regressor (meta-ensemble)**
+
+Models were evaluated using **cross-validated RMSE / MAE**
+to ensure results reflect **true generalization**.
+
+---
+
+### 5️⃣ Explainability (SHAP)
+
+To ensure transparency and business alignment:
+
+* **Global SHAP** → identifies key price drivers
+* **Beeswarm plot** → feature impact and directional effects
+* **Local SHAP waterfall** → explains individual predictions
+
+Results confirm that higher **overall quality, living area, and newer construction** generally increase predicted sale price, which aligns with housing-market economics.
+
+---
+
+## 📊 Results (Summary)
+
+* **Baseline RMSE:** 0.21
+* **Best Model RMSE:** 0.12
+* **Performance Gain:** ~**42.9% improvement vs baseline**
+
+Performance improvements were achieved through:
+
+* structured preprocessing & feature selection
+* model comparison and ensemble stacking
+* disciplined cross-validated evaluation
+
+The final model demonstrates **strong predictive value and practical interpretability**.
+
+---
+
+## 🚀 Model Export & Inference Readiness
+
+The final pipeline (preprocessing + model) was exported as a deployable object to ensure **consistent preprocessing during inference**, making the project suitable for:
+
+* Streamlit demo apps
+* API-based prediction services
+* batch scoring workflows
+
+---
+
+## 🔁 Reproducibility
 
 * Pipeline-based preprocessing
+* Deterministic execution
 * Random seeds fixed
-* Notebook execution fully deterministic
 
 ---
 
-### 🚀 Potential Next Steps
+## 🔎 Limitations & Future Work
 
-* Hyperparameter tuning & automated search
-* SHAP-based feature importance & explainability
-* Export model + inference script
-* Optional Streamlit demo app
-* ML Ops workflow (tracking, versioning, deployment)
+* Extended hyperparameter tuning
+* Additional interaction / geospatial features
+* Monitoring & drift detection
+* MLflow experiment tracking
+* Web-based prediction interface
 
 ---
 
-### 💡 What This Project Demonstrates
+## 💡 What This Project Demonstrates
 
 This project highlights my ability to:
 
 * Design **industry-style ML workflows**, not just experiments
-* Apply **structured feature engineering and evaluation**
-* Work with real-world, messy tabular data
-* Communicate modeling decisions and trade-offs
+* Apply **structured feature engineering & validation**
+* Work with real-world tabular datasets
 * Build models that are **reproducible, interpretable, and scalable**
-
-This project is intended as a **portfolio example for Data Scientist / ML roles**.
-
-
+* Communicate modeling decisions in a **business-aligned** way
