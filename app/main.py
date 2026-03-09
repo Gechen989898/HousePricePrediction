@@ -1,21 +1,11 @@
-from fastapi import FastAPI,UploadFile,File
+from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import HTMLResponse
-from pydantic import BaseModel
-import joblib
-import numpy as np
-from pathlib import Path
-import os
 import pandas as pd
 
-app = FastAPI(title='House price prediction api')
+from src.inference import load_model, predict_dataframe
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-MODEL_PATH  = BASE_DIR / "model"/ "pipeline_stacking.pkl"
-print(MODEL_PATH)
-model = joblib.load(MODEL_PATH)
-
-class PredictRequest(BaseModel):
-    file_path: str
+app = FastAPI()
+model = load_model()
 
 @app.get("/", response_class=HTMLResponse)
 async def home():
@@ -176,26 +166,10 @@ async def home():
 
 @app.get('/health')
 def health():
-    return {'status':'ok'}
+    return {'status': 'ok'}
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
-
     df = pd.read_csv(file.file)
-
-    X_test_ids = df["Id"]
-    X_test = df.drop(columns=["Id"])
-
-    months = 12
-    X_test["sin_MoSold"] = np.sin(2*np.pi*(X_test.MoSold-1)/months)
-    X_test["cos_MoSold"] = np.cos(2*np.pi*(X_test.MoSold-1)/months)
-
-    preds_log = model.predict(X_test)
-    preds = np.exp(preds_log)
-
-    results = pd.DataFrame({
-        "Id": X_test_ids,
-        "SalePrice": np.round(preds,2)
-    })
-
+    results = predict_dataframe(model, df)
     return results.to_dict(orient="records")
