@@ -1,0 +1,4 @@
+-r requirements-train.txt
+azure-ai-ml
+azure-identity
+azureml-mlflow

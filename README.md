@@ -96,6 +96,37 @@ HousePricePrediction/
 ### Prerequisites
 - Python 3.12+ or Docker
 
+### Scripted Stacking Training
+
+The notebook work now has a script-based training entrypoint built around the notebook's stacking path:
+
+- `src/features.py`: shared feature engineering for training and inference
+- `src/modeling.py`: notebook-aligned preprocessing plus stacking config
+- `src/train.py`: local or Azure ML training entrypoint
+- `src/inference.py`: shared model loading and prediction logic
+
+Run local training:
+
+```bash
+python -m src.train \
+  --train-data data/train.csv \
+  --model-output outputs/model \
+  --metrics-output outputs/metrics.json \
+  --predictions-output outputs/validation_predictions.csv
+```
+
+Install training extras for MLflow tracking:
+
+```bash
+pip install -r requirements-train.txt
+```
+
+Install Azure ML submission extras:
+
+```bash
+pip install -r requirements-azureml.txt
+```
+
 ### Option 1: Local Development
 
 **1. Install dependencies:**
