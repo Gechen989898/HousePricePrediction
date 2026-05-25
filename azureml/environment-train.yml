@@ -1,0 +1,20 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+
+name: house-price-train-env
+version: 2
+image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04:latest
+conda_file:
+  channels:
+    - conda-forge
+  dependencies:
+    - python=3.12
+    - pip
+    - pip:
+        - numpy==2.2.6
+        - pandas==2.2.3
+        - scikit-learn==1.6.1
+        - xgboost==2.1.4
+        - scipy==1.13.1
+        - joblib==1.4.2
+        - mlflow
+        - azureml-mlflow

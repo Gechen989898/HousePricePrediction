@@ -1,0 +1,22 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+code: ..
+command: >-
+  python -m src.train
+  --train-data ${{inputs.train_data}}
+  --model-output ${{outputs.model_output}}
+  --metrics-output ${{outputs.metrics_output}}/metrics.json
+  --predictions-output ${{outputs.metrics_output}}/validation_predictions.csv
+inputs:
+  train_data:
+    type: uri_file
+    path: azureml:house-price-train-data:1
+outputs:
+  model_output:
+    type: uri_folder
+  metrics_output:
+    type: uri_folder
+environment: azureml:house-price-train-env:2
+compute: azureml:cpu-cluster
+experiment_name: house-price-stacking
+display_name: train-house-price-stacking
